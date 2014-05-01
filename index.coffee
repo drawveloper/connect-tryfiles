@@ -18,8 +18,9 @@ module.exports = (match, target, options = {})->
       found = files
         # Excludes directories
         .filter((f) -> f.charAt(f.length-1) isnt '/')
-        # Match with url
-        .filter((f) -> f.indexOf(req.url.slice(1)) isnt -1)
+        # Match with url ignoring query string
+        .filter((f) ->
+          f is req.url.slice(1).replace(/\?.*/, ''))
 
       if found.length > 0
         console.log '\tfound', found
