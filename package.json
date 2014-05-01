@@ -1,0 +1,32 @@
+{
+  "name": "connect-tryfiles",
+  "description": "nginx try_files style connect middleware: serve local file if exists or proxy to address",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gadr/connect-tryfiles.git"
+  },
+  "main": "index.coffee",
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.2.x"
+  },
+  "scripts": {
+    "start": "coffee index.coffee",
+    "test": "mocha --compilers coffee:coffee-script/register --reporter spec specs/**",
+    "test-watch": "mocha --watch --compilers coffee:coffee-script/register --reporter spec specs/**"
+  },
+  "preferGlobal": "true",
+  "dependencies": {
+    "coffee-script": "1.7.*",
+    "colors": "~0.6.2",
+    "glob": "^3.2.9",
+    "http-proxy": "^1.1.2",
+    "underscore": "^1.6.0"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "connect": "^2.14.5",
+    "request": "^2.34.0"
+  }
+}
