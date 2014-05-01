@@ -23,9 +23,7 @@ module.exports = (match, target, options = {})->
           f is req.url.slice(1).replace(/\?.*/, ''))
 
       if found.length > 0
-        console.log '\tfound', found
         next()
       else
-        console.log '\tproxying'
         proxy.web req, res, (err) ->
           next err if err
