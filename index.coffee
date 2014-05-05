@@ -1,8 +1,11 @@
 glob = require 'glob'
 _ = require 'underscore'
 httpProxy = require 'http-proxy'
+require 'colors'
 
 module.exports = (match, target, options = {})->
+  console.verbose = -> console.log.apply(console, arguments) if options.verbose
+    
   globOptions =
     nosort: true
     mark: true
@@ -23,7 +26,9 @@ module.exports = (match, target, options = {})->
           f is req.url.slice(1).replace(/\?.*/, ''))
 
       if found.length > 0
+        console.verbose "Found file:", found.toString().green
         next()
       else
+        console.verbose "Proxying:", req.url.cyan
         proxy.web req, res, (err) ->
           next err if err
