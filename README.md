@@ -24,9 +24,11 @@ This way, you can serve local files easily and proxy the rest to your remote ser
     server = http.createServer(app).listen(8000)
 
 Assuming there is
-    - a file at `./files/foo`
-    - a different server listening at localhost:9000 that returns "world" to any request
+
+- a file at `./files/foo`
+- a different server listening at localhost:9000 that returns "world" to any request
 
 Requests to:
-    - `http://localhost:8000/foo` will retrieve the file at `files/foo`
-    - `http://localhost:8000/hello` will return "world"
+
+- `http://localhost:8000/foo` will retrieve the file at `files/foo`
+- `http://localhost:8000/hello` will return "world"
