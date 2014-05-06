@@ -1,7 +1,7 @@
 {
   "name": "connect-tryfiles",
   "description": "nginx try_files style connect middleware: serve local file if exists or proxy to address",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/gadr/connect-tryfiles.git"
