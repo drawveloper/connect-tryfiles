@@ -130,6 +130,36 @@ describe 'Try Files', ->
         expect(body).to.equal('qux')
         done()
 
+    it 'should not respond with index file if it does not exists', (done) ->
+      app.use tryfiles '**', 'http://localhost:9000', {cwd: 'specs/'}
+      app.use connect.static 'specs/'
+      startServer app
+
+      request 'http://localhost:8000/', (err, response, body) ->
+        return done err if err
+        expect(body).to.equal('qux')
+        done()
+
+    it 'should not respond with index file if it does not exists without cwd', (done) ->
+      app.use tryfiles '**', 'http://localhost:9000'
+      app.use connect.static './'
+      startServer app
+
+      request 'http://localhost:8000/', (err, response, body) ->
+        return done err if err
+        expect(body).to.equal('qux')
+        done()
+
+    it 'should not respond with index file if it does not exists without cwd and without trailing slash', (done) ->
+      app.use tryfiles '**', 'http://localhost:9000'
+      app.use connect.static './'
+      startServer app
+
+      request 'http://localhost:8000', (err, response, body) ->
+        return done err if err
+        expect(body).to.equal('qux')
+        done()
+
   describe 'when proxying', ->
 
     it 'should respond via proxy', (done) ->

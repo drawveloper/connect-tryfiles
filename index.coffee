@@ -33,9 +33,12 @@ module.exports = (match, target, options = {})->
       foundDirectories = files
         # Excludes files
         .filter((f) -> f.charAt(f.length-1) is '/')
+        # Clean slashes
+        .map((f) -> 
+          f.replace(/^\//, '').replace(/\/$/,''))
         # Match with url ignoring query string
         .filter((f) ->
-          f.replace(/^\//, '').replace(/\/$/,'') is cleanUrl)
+          f is cleanUrl)
 
       if foundFiles.length > 0
         console.verbose "Found file:", foundFiles.toString().green
@@ -46,8 +49,9 @@ module.exports = (match, target, options = {})->
         # replace first slash, if present, or glob can't find the file.
         indexPath = path.join(foundDirectories[0], options.index)
         index = glob.sync path.join(indexPath), _.extend(globOptions, options)
-        console.verbose "Found file:", index.toString().green
-        return next() if index
+        if index.length > 0
+          console.verbose "Found file:", index.toString().green
+          return next()
         
       console.verbose "Proxying:", req.url.cyan
       proxy.web req, res, (err) ->
