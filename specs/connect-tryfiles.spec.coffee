@@ -2,6 +2,7 @@ expect = require('chai').expect
 tryfiles = require '../index'
 connect = require 'connect'
 http = require 'http'
+fs = require 'fs'
 request = require 'request'
 require 'colors'
 
@@ -77,6 +78,56 @@ describe 'Try Files', ->
       request 'http://localhost:8000/foo?v=3', (err, response, body) ->
         return done err if err
         expect(body).to.equal('bar')
+        done()
+
+    it 'should respond with index file', (done) ->
+      app.use tryfiles '**', 'http://localhost:9000', {cwd: 'specs/fixtures'}
+      app.use connect.static 'specs/fixtures'
+      startServer app
+
+      request 'http://localhost:8000/', (err, response, body) ->
+        return done err if err
+        expect(body).to.equal(fs.readFileSync('specs/fixtures/index.html').toString())
+        done()
+
+    it 'should respond with index file without trailing slash', (done) ->
+      app.use tryfiles '**', 'http://localhost:9000', {cwd: 'specs/fixtures'}
+      app.use connect.static 'specs/fixtures'
+      startServer app
+
+      request 'http://localhost:8000', (err, response, body) ->
+        return done err if err
+        expect(body).to.equal(fs.readFileSync('specs/fixtures/index.html').toString())
+        done()
+
+    it 'should respond with index file without cwd', (done) ->
+      app.use tryfiles 'specs/fixtures/**', 'http://localhost:9000'
+      app.use connect.static './'
+      startServer app
+
+      request 'http://localhost:8000/specs/fixtures/', (err, response, body) ->
+        return done err if err
+        expect(body).to.equal(fs.readFileSync('specs/fixtures/index.html').toString())
+        done()
+
+    it 'should respond with index file without cwd and without trailing slash', (done) ->
+      app.use tryfiles 'specs/fixtures/**', 'http://localhost:9000'
+      app.use connect.static './'
+      startServer app
+
+      request 'http://localhost:8000/specs/fixtures', (err, response, body) ->
+        return done err if err
+        expect(body).to.equal(fs.readFileSync('specs/fixtures/index.html').toString())
+        done()
+
+    it 'should not respond with index file when index is disabled', (done) ->
+      app.use tryfiles '**', 'http://localhost:9000', {cwd: 'specs/fixtures', index: false}
+      app.use connect.static 'specs/fixtures'
+      startServer app
+
+      request 'http://localhost:8000/', (err, response, body) ->
+        return done err if err
+        expect(body).to.equal('qux')
         done()
 
   describe 'when proxying', ->
