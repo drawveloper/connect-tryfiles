@@ -1,7 +1,28 @@
 connect-tryfiles
 ================
 
-![Build status](https://travis-ci.org/gadr/connect-tryfiles.png)
+# WARNING: DEPRECATED
+
+This was a nice experiment, but right now there is a better way to accomplish the same.
+
+As the new `serve-static` middleware from Express now calls `next` when it doesn't find a file, you can simply add a proxy afterwards:
+
+    connect = require 'connect'
+    http = require 'http'
+    serveStatic = require('serve-static')
+    proxy = require('proxy-middleware')
+
+    app = connect()
+        .use(serveStatic('./files'))
+        .use(proxy(url.parse('https://example.com/endpoint')))
+
+    server = http.createServer(app).listen(8000)
+
+Here be dragons! You have been warned :)
+
+### Description
+
+![Build status](https://travis-ci.org/firstdoit/connect-tryfiles.png)
 
 nginx try_files style connect middleware: serve local file if exists or proxy to address
 
