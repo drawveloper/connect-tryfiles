@@ -9,8 +9,9 @@ As the new `serve-static` middleware from Express now calls `next` when it doesn
 
     connect = require 'connect'
     http = require 'http'
-    serveStatic = require('serve-static')
-    proxy = require('proxy-middleware')
+    url = require 'url'
+    serveStatic = require 'serve-static'
+    proxy = require 'proxy-middleware'
 
     app = connect()
         .use(serveStatic('./files'))
